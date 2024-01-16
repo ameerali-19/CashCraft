@@ -1,0 +1,9 @@
+body {
+    background-color: aquamarine;
+}
+
+.showBalance,.addIncome,.addExpense,.extras,.graph{
+    margin-top: 10%;
+    display: flex;
+    justify-content: center;
+}
