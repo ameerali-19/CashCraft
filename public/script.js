@@ -10,7 +10,7 @@ function init(){
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
     document.getElementById("extras").addEventListener("click",updateBalance,false);
-
+  
 
     console.log("init");
 }
@@ -37,14 +37,14 @@ function updateBalance(){
 
 
 function addIncome(){
-    var income = parseInt(document.getElementById("income").value);
+    var income = parseFloat(document.getElementById("income").value);
     let data;
     userRef.once('value', (snapshot) => {
         data = snapshot.val();
     });
     
     userRef.update({
-        balance: income + parseInt(data.balance)
+        balance: income + parseFloat(data.balance)
       })
         .then(() => {
           console.log("Balance updated");
@@ -60,14 +60,14 @@ function addIncome(){
 
 function addExpense(){
 
-    var expense = parseInt(document.getElementById("expense").value);
+    var expense = parseFloat(document.getElementById("expense").value);
     let data;
     userRef.once('value', (snapshot) => {
         data = snapshot.val();
     });
     
     userRef.update({
-        balance: parseInt(data.balance) - expense 
+        balance: parseFloat(data.balance) - expense 
       })
         .then(() => {
           console.log("Balance updated");
