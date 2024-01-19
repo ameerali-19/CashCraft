@@ -2,8 +2,11 @@ body {
     background-color: aquamarine;
 }
 
+.container input{
+    margin-right: 20px;
+}
 .showBalance,.addIncome,.addExpense,.extras,.graph{
-    margin-top: 10%;
+    margin: 10%;
     display: flex;
     justify-content: center;
 }
