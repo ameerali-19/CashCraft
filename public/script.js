@@ -4,12 +4,12 @@ function init(){
     firebase.initializeApp(firebaseConfig);
     database = firebase.database();
     globalRef = database.ref("users");
-    globalRef.on('value', changeBalance);
     userRef = globalRef.child("user1");
-
+    
+    globalRef.on('value', changeBalance);
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
-    document.getElementById("extras").addEventListener("click",changeBalance,false);
+    document.getElementById("accStatement").addEventListener("click",accStatement,false);
   
 
     console.log("init");
@@ -59,10 +59,15 @@ function addIncome(){
     if(expense == "" || section == ""){
         document.getElementById("addIncomeError").innerHTML = "Amount or Section cannot be empty";
         return ;
-    }
+    }    
+    const currentDate = new Date();    
+    const date = currentDate.toLocaleDateString();
+    const time = currentDate.toLocaleTimeString();
     const incomeData = {
         amount : income,
-        section : section
+        section : section,
+        date : date,
+        time : time
     };
     const incomesRef = userRef.child("incomes");
     incomesRef.push(incomeData)
@@ -87,10 +92,15 @@ function addExpense(){
     if(expense == "" || section == ""){
         document.getElementById("addExpenseError").innerHTML = "Amount or Section cannot be empty";
         return ;
-    }
+    }   
+    const currentDate = new Date();    
+    const date = currentDate.toLocaleDateString();
+    const time = currentDate.toLocaleTimeString();
     const expenseData = {
         amount : expense,
-        section : section
+        section : section,
+        date : date,
+        time : time
     };
     const incomesRef = userRef.child("expenses");
     incomesRef.push(expenseData)
@@ -107,3 +117,7 @@ function addExpense(){
     document.getElementById("addExpenseError").innerHTML = "";
 }
 
+function accStatement(){
+    console.log("Check");
+    window.location.href = "accountstatement.html"
+}
