@@ -27,6 +27,7 @@ const firebaseConfig = {
     measurementId: "G-1PWK0RT8N6"
 };
 
+//Changes the balances in the HTML page
 function changeBalance(){
     userRef.on('value', (snapshot) => {
         const data = snapshot.val();
@@ -35,6 +36,7 @@ function changeBalance(){
     });    
 }
 
+//Updates the balance in the Database
 function updateBalance(amt){
     let data;
     userRef.once('value', (snapshot) => {
@@ -54,6 +56,10 @@ function updateBalance(amt){
 function addIncome(){
     var income = parseFloat(document.getElementById("income").value);
     var section = document.getElementById("incomeSections").value;
+    if(expense == "" || section == ""){
+        document.getElementById("addIncomeError").innerHTML = "Amount or Section cannot be empty";
+        return ;
+    }
     const incomeData = {
         amount : income,
         section : section
@@ -66,16 +72,22 @@ function addIncome(){
     .catch((error) => {
         console.error("Error adding data:", error);
     });
-
+    
     updateBalance(income);    
     changeBalance();
     document.getElementById("income").value = "";
+    document.getElementById("incomeSections").value = "";
+    document.getElementById("addIncomeError").innerHTML = "";
 }
 
 
 function addExpense(){
     var expense = parseFloat(document.getElementById("expense").value);
     var section = document.getElementById("expenseSections").value;
+    if(expense == "" || section == ""){
+        document.getElementById("addExpenseError").innerHTML = "Amount or Section cannot be empty";
+        return ;
+    }
     const expenseData = {
         amount : expense,
         section : section
@@ -91,5 +103,7 @@ function addExpense(){
     updateBalance(expense*-1);
     changeBalance();
     document.getElementById("expense").value = "";
+    document.getElementById("expenseSections").value = "";
+    document.getElementById("addExpenseError").innerHTML = "";
 }
 

@@ -12,13 +12,15 @@ body {
 }
 
 .addIncome,
-.addExpense {
+.addExpense,
+.extras {
     margin: 1em;
     width: 80%;
 }
 
 .addIncome,
 .addExpense,
+.extras,
 .addIncome input,
 .addIncome select,
 .addExpense input,
@@ -30,7 +32,8 @@ body {
 }
 
 .addIncome button,
-.addExpense button {
+.addExpense button,
+.extras button {
     width: 100%;
 }
 
