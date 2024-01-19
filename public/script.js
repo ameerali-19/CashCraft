@@ -1,15 +1,16 @@
 document.addEventListener("DOMContentLoaded", init, false);
 
-let globalRef;
 function init(){
     firebase.initializeApp(firebaseConfig);
     database = firebase.database();
     globalRef = database.ref("users");
+    globalRef.on('value', updateBalance);
     userRef = globalRef.child("user1");
 
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
-    document.getElementById("extras").addEventListener("click",getBalance,false);
+    document.getElementById("extras").addEventListener("click",updateBalance,false);
+
 
     console.log("init");
 }
@@ -26,34 +27,56 @@ const firebaseConfig = {
     measurementId: "G-1PWK0RT8N6"
 };
 
-globalRef.on('value', getBalance);
-function getBalance(){
+function updateBalance(){
     userRef.on('value', (snapshot) => {
         const data = snapshot.val();
-        console.log("DB updates", data);
+        //console.log("updateBalance called");
         document.getElementById("balance").innerHTML = data.balance;
     });    
 }
 
 
 function addIncome(){
+    var income = parseInt(document.getElementById("income").value);
+    let data;
+    userRef.once('value', (snapshot) => {
+        data = snapshot.val();
+    });
     
-}
-
-
-function addExpense(){
-
-    var expense = document.getElementById("expense").value;
     userRef.update({
-        balance: expense
+        balance: income + parseInt(data.balance)
       })
         .then(() => {
-          console.log("New balance = ",expense);
+          console.log("Balance updated");
         })
         .catch((error) => {
           console.error("Error updating balance:", error);
         }); 
     
-    getBalance();
+    updateBalance();
+    document.getElementById("income").value = "";
+}
+
+
+function addExpense(){
+
+    var expense = parseInt(document.getElementById("expense").value);
+    let data;
+    userRef.once('value', (snapshot) => {
+        data = snapshot.val();
+    });
+    
+    userRef.update({
+        balance: parseInt(data.balance) - expense 
+      })
+        .then(() => {
+          console.log("Balance updated");
+        })
+        .catch((error) => {
+          console.error("Error updating balance:", error);
+        }); 
+    
+    updateBalance();
+    document.getElementById("expense").value = "";
 }
 
