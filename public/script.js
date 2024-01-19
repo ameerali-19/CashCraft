@@ -4,12 +4,12 @@ function init(){
     firebase.initializeApp(firebaseConfig);
     database = firebase.database();
     globalRef = database.ref("users");
-    globalRef.on('value', updateBalance);
+    globalRef.on('value', changeBalance);
     userRef = globalRef.child("user1");
 
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
-    document.getElementById("extras").addEventListener("click",updateBalance,false);
+    document.getElementById("extras").addEventListener("click",changeBalance,false);
   
 
     console.log("init");
@@ -27,24 +27,21 @@ const firebaseConfig = {
     measurementId: "G-1PWK0RT8N6"
 };
 
-function updateBalance(){
+function changeBalance(){
     userRef.on('value', (snapshot) => {
         const data = snapshot.val();
-        //console.log("updateBalance called");
+        //console.log("changeBalance called");
         document.getElementById("balance").innerHTML = data.balance;
     });    
 }
 
-
-function addIncome(){
-    var income = parseFloat(document.getElementById("income").value);
+function updateBalance(amt){
     let data;
     userRef.once('value', (snapshot) => {
         data = snapshot.val();
     });
-    
     userRef.update({
-        balance: income + parseFloat(data.balance)
+        balance: parseFloat(data.balance) + parseFloat(amt)
       })
         .then(() => {
           console.log("Balance updated");
@@ -52,31 +49,47 @@ function addIncome(){
         .catch((error) => {
           console.error("Error updating balance:", error);
         }); 
-    
-    updateBalance();
+}
+
+function addIncome(){
+    var income = parseFloat(document.getElementById("income").value);
+    var section = document.getElementById("incomeSections").value;
+    const incomeData = {
+        amount : income,
+        section : section
+    };
+    const incomesRef = userRef.child("incomes");
+    incomesRef.push(incomeData)
+    .then(() => {
+        console.log("Income added successfully!");
+    })
+    .catch((error) => {
+        console.error("Error adding data:", error);
+    });
+
+    updateBalance(income);    
+    changeBalance();
     document.getElementById("income").value = "";
 }
 
 
 function addExpense(){
-
     var expense = parseFloat(document.getElementById("expense").value);
-    let data;
-    userRef.once('value', (snapshot) => {
-        data = snapshot.val();
+    var section = document.getElementById("expenseSections").value;
+    const expenseData = {
+        amount : expense,
+        section : section
+    };
+    const incomesRef = userRef.child("expenses");
+    incomesRef.push(expenseData)
+    .then(() => {
+        console.log("Expense added successfully!");
+    })
+    .catch((error) => {
+        console.error("Error adding data:", error);
     });
-    
-    userRef.update({
-        balance: parseFloat(data.balance) - expense 
-      })
-        .then(() => {
-          console.log("Balance updated");
-        })
-        .catch((error) => {
-          console.error("Error updating balance:", error);
-        }); 
-    
-    updateBalance();
+    updateBalance(expense*-1);
+    changeBalance();
     document.getElementById("expense").value = "";
 }
 

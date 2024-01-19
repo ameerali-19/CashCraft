@@ -1,12 +1,43 @@
 body {
     background-color: aquamarine;
+    margin: 0;
 }
 
-.container input{
-    margin-right: 20px;
-}
-.showBalance,.addIncome,.addExpense,.extras,.graph{
-    margin: 10%;
+.container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    min-height: 100vh;
+}
+
+.addIncome,
+.addExpense {
+    margin: 1em;
+    width: 80%;
+}
+
+.addIncome,
+.addExpense,
+.addIncome input,
+.addIncome select,
+.addExpense input,
+.addExpense select {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.addIncome button,
+.addExpense button {
+    width: 100%;
+}
+
+.addIncome input,
+.addIncome select,
+.addExpense input,
+.addExpense select {
+    margin-bottom: 10px;
+    width: calc(48% - 5px); 
 }
