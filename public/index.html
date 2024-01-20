@@ -21,6 +21,16 @@
             </div>
         </div>
         
+        <div class="chartOptions">
+            <select id="changeGraphSource" class="form-select">
+                <option selected value="Expenses">Expenses</option>
+                <option value="Income">Income</option>
+            </select>
+            <select id="changeChart" class="form-select">
+                <option selected value="Expenses">Pie</option>
+                <option value="Income">Bar</option>
+            </select>
+        </div>
         <div class="graph">
             <canvas id="expenseChart" width="400" height="300" ></canvas>
         </div>

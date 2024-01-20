@@ -29,6 +29,22 @@
     box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.7);
 }
 
+.changeChart {
+    width: 80%;
+    margin-top: 1em;
+}
+
+.chartOptions {
+    display: flex;
+    width: 80%;
+    margin: 1em;
+}
+
+.chartOptions select{
+    margin-right: 0.5em;
+    width: 50%
+}
+
 .addIncome,
 .addExpense,
 .extras {

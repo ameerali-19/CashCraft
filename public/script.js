@@ -11,6 +11,8 @@ function init(){
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
     document.getElementById("accStatement").addEventListener("click",accStatement,false);
+    document.getElementById("changeChart").addEventListener("change",changeChart,false);
+    document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
 
     
     console.log("init");
@@ -36,6 +38,7 @@ function changeBalance(){
         document.getElementById("balance").innerHTML = data.balance;
         document.getElementById("name").innerHTML = data.name;
     });
+    graphSource = graphSource != data.incomes ? data.expenses : data.incomes;
     console.log("data extracted");
 }
 
@@ -81,6 +84,7 @@ function addIncome(){
     document.getElementById("income").value = "";
     document.getElementById("incomeSections").value = "";
     document.getElementById("addIncomeError").innerHTML = "";
+
 }
 
 
@@ -119,67 +123,74 @@ function accStatement(){
     window.location.href = "accountstatement.html"
 }
 
+let chartType = "pie";
+function changeChart(){
+    chartType = chartType === "pie" ? "bar" : "pie" ; 
+    addChart();
+}
 let expenseChart;
+let graphSource;
+function changeGraphSource(){
+    console.log("change source")
+    graphSource = graphSource != data.incomes ? data.incomes : data.expenses;
+    addChart();
+}
+
 function addChart() {
-    userRef.child("expenses").once('value')
-    .then((snapshot) => {
-        let expensesData = snapshot.val();
+
+    let expensesData = graphSource;
         
-        const sections = [];
-        const counts = [];
-        const amounts = [];
+    const sections = [];
+    const counts = [];
+    const amounts = [];
         
-        for (const expenseId in expensesData) {
-            const expense = expensesData[expenseId];
-            const section = expense.section;
-            const amount = expense.amount;
+    for (const expenseId in expensesData) {
+        const expense = expensesData[expenseId];
+        const section = expense.section;
+        const amount = expense.amount;
             
-            const index = sections.indexOf(section);
-            if (index !== -1) {
-                counts[index]++;
-                amounts[index] += amount;
-                } else {
-                    sections.push(section);
-                    counts.push(1);
-                    amounts.push(amount);
-                }
+        const index = sections.indexOf(section);
+        if (index !== -1) {
+            counts[index]++;
+            amounts[index] += amount;
+        } else {
+            sections.push(section);
+            counts.push(1);
+            amounts.push(amount);
             }
+        }
             
-            const ctx = document.getElementById('expenseChart').getContext('2d');
+        const ctx = document.getElementById('expenseChart').getContext('2d');
             
-            if(expenseChart){
-                expenseChart.destroy();
-            }
+        if(expenseChart){
+            expenseChart.destroy();
+        }
             
-            expenseChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: sections,
-                    datasets: [{
-                        data: amounts,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.7)',
-                            'rgba(54, 162, 235, 0.7)',
-                            'rgba(255, 206, 86, 0.7)',
-                            'rgba(32, 133, 236, 0.7)',
-                            'rgba(206, 169, 188, 0.7)',
-                            'rgba(50, 50, 50, 0.7)',
-                        ],
-                        borderWidth: 0,
-                    }],
+        expenseChart = new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: sections,
+                datasets: [{
+                    data: amounts,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(32, 133, 236, 0.7)',
+                        'rgba(206, 169, 188, 0.7)',
+                        'rgba(50, 50, 50, 0.7)',
+                    ],
+                    borderWidth: 0,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Expense Distribution by Section',
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    title: {
-                        display: true,
-                        text: 'Expense Distribution by Section',
-                    },
-                },
-            });
-        })
-        .catch((error) => {
-            console.error("Error fetching expenses data:", error);
+            },
         });
     console.log("Chart creation completed");
 }
