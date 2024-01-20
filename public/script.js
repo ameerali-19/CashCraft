@@ -9,7 +9,12 @@ function init(){
     globalRef.on('value', addChart);
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
-    document.getElementById("accStatement").addEventListener("click",accStatement,false);
+    document.getElementById("accStatement").addEventListener("click",function(){
+        window.location.href = "accountstatement.html"
+    },false);
+    document.getElementById("debt").addEventListener("click",function(){
+        window.location.href = "debt.html"
+    },false);
     document.getElementById("changeChart").addEventListener("change",changeChart,false);
     document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
     
@@ -120,11 +125,6 @@ function addExpense(){
     document.getElementById("expense").value = "";
     document.getElementById("expenseSections").value = "";
     document.getElementById("addExpenseError").innerHTML = "";
-}
-
-function accStatement(){
-    console.log("Check");
-    window.location.href = "accountstatement.html"
 }
 
 let chartType = "pie";

@@ -71,6 +71,15 @@
     width: 100%;
 }
 
+.extras {
+    width: 90%;
+}
+
+.extras button {
+    margin-top: -0.5em;
+    margin-bottom: 2em;
+}
+
 .addIncome input,
 .addIncome select,
 .addExpense input,
