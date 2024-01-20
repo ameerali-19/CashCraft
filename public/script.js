@@ -10,10 +10,10 @@ function init(){
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
     document.getElementById("accStatement").addEventListener("click",function(){
-        window.location.href = "accountstatement.html"
+        window.location.href = "accountstatement/accountstatement.html"
     },false);
     document.getElementById("debt").addEventListener("click",function(){
-        window.location.href = "debt.html"
+        window.location.href = "debt/debt.html"
     },false);
     document.getElementById("changeChart").addEventListener("change",changeChart,false);
     document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
