@@ -23,20 +23,20 @@
 
 .custom-card {
     margin: 1em;
-    width: 80%;
+    width: 90%;
     -webkit-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.7);
     -moz-box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.7);
     box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.7);
 }
 
 .changeChart {
-    width: 80%;
+    width: 90%;
     margin-top: 1em;
 }
 
 .chartOptions {
     display: flex;
-    width: 80%;
+    width: 90%;
     margin: 1em;
 }
 
@@ -49,7 +49,7 @@
 .addExpense,
 .extras {
     margin: 1em;
-    width: 80%;
+    width: 90%;
 }
 
 .addIncome,
@@ -79,7 +79,8 @@
     width: calc(48% - 5px); 
 }
 
-.addIncomeError,
-.addExpenseError {
-    color: #D22B2B;
+.addIncomeError h6,
+.addExpenseError h6 {
+    color: #dc3545;
+    font-size: 10pt;
 }

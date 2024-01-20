@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", init, false);
-
 function init(){
     firebase.initializeApp(firebaseConfig);
     database = firebase.database();
@@ -13,8 +12,9 @@ function init(){
     document.getElementById("accStatement").addEventListener("click",accStatement,false);
     document.getElementById("changeChart").addEventListener("change",changeChart,false);
     document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
-
     
+    graphSourceFlag = 0;
+
     console.log("init");
 }
 
@@ -32,13 +32,17 @@ const firebaseConfig = {
 
 //Changes the balances and the chart in the HTML page
 let data;
+let graphSourceFlag;
 function changeBalance(){
     userRef.on('value', (snapshot) => {
         data = snapshot.val();
         document.getElementById("balance").innerHTML = data.balance;
         document.getElementById("name").innerHTML = data.name;
     });
-    graphSource = graphSource != data.incomes ? data.expenses : data.incomes;
+    if(graphSourceFlag == 0){
+        graphSource = graphSource != data.incomes ? data.expenses : data.incomes;
+        graphSourceFlag = 1;
+    }
     console.log("data extracted");
 }
 
@@ -131,8 +135,8 @@ function changeChart(){
 let expenseChart;
 let graphSource;
 function changeGraphSource(){
-    console.log("change source")
-    graphSource = graphSource != data.incomes ? data.incomes : data.expenses;
+    const selectedOption = document.getElementById("changeGraphSource").value;
+    graphSource = selectedOption == "expenses" ? data.expenses : data.incomes;
     addChart();
 }
 

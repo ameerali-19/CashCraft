@@ -23,8 +23,8 @@
         
         <div class="chartOptions">
             <select id="changeGraphSource" class="form-select">
-                <option selected value="Expenses">Expenses</option>
-                <option value="Income">Income</option>
+                <option selected value="expenses">Expenses</option>
+                <option value="incomes">Income</option>
             </select>
             <select id="changeChart" class="form-select">
                 <option selected value="Expenses">Pie</option>
@@ -32,7 +32,7 @@
             </select>
         </div>
         <div class="graph">
-            <canvas id="expenseChart" width="400" height="300" ></canvas>
+            <canvas id="expenseChart" width="350" height="300" ></canvas>
         </div>
 
         <div class="addIncome">
@@ -43,7 +43,7 @@
                 <option value="Salary">Salary</option>
                 <option value="Other income">Other</option>
             </select>
-            <div id="addIncomeError"></div>
+            <div class="addIncomeError" ><h6 id="addIncomeError"></h6></div>
             <button type="button" class="btn btn-dark" id="addIncome">Add Income</button>
         </div>
         
@@ -57,7 +57,7 @@
                 <option value="Misc">Misc</option>
                 <option value="Other expense">Other</option>
             </select>
-            <div id="addExpenseError"></div>
+            <div class="addExpenseError"><h6 id="addExpenseError"></h6></div>
             <button type="button" class="btn btn-dark" id="addExpense">Add Expense</button>
         </div>
 
