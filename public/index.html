@@ -14,8 +14,11 @@
 </head>
 <body>
     <div class="container">
-        <div class="showBalance">
-            <h3>Your current balance is : <span id="balance"></span></h3>
+        <div class="card userDetails custom-card">
+            <div class="card-body">
+                <h2 class="card-title"><span id="name"></span></h2>
+                <h6 class="card-text">Balance : <span id="balance"></span></h6>
+            </div>
         </div>
         
         <div class="graph">
@@ -23,26 +26,26 @@
         </div>
 
         <div class="addIncome">
-            <input type="number" inputmode="numeric" id="income" placeholder="Enter the amount">
-            <select id="incomeSections" >
+            <input type="number" inputmode="numeric" id="income" placeholder="Enter the amount" class="form-control">
+            <select id="incomeSections" class="form-select">
                 <option disabled selected value="">Section</option>
                 <option value="Pocket Money">Pocket Money</option>
                 <option value="Salary">Salary</option>
-                <option value="Other">Other</option>
+                <option value="Other income">Other</option>
             </select>
             <div id="addIncomeError"></div>
             <button type="button" class="btn btn-dark" id="addIncome">Add Income</button>
         </div>
         
         <div class="addExpense">
-            <input type="number" inputmode="numeric" id="expense" placeholder="Enter the amount">
-            <select id="expenseSections" >
+            <input type="number" inputmode="numeric" id="expense" placeholder="Enter the amount" class="form-control">
+            <select id="expenseSections" class="form-select">
                 <option disabled selected value="">Section</option>
                 <option value="Food">Food</option>
                 <option value="Petrol">Petrol</option>
                 <option value="Fees">Fees</option>
                 <option value="Misc">Misc</option>
-                <option value="other">Other</option>
+                <option value="Other expense">Other</option>
             </select>
             <div id="addExpenseError"></div>
             <button type="button" class="btn btn-dark" id="addExpense">Add Expense</button>

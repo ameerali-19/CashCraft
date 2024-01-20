@@ -7,11 +7,11 @@ function init(){
     userRef = globalRef.child("user1");
     
     globalRef.on('value', changeBalance);
+    globalRef.on('value', addChart);
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
     document.getElementById("accStatement").addEventListener("click",accStatement,false);
-  
-    addChart();
+
     
     console.log("init");
 }
@@ -28,22 +28,19 @@ const firebaseConfig = {
     measurementId: "G-1PWK0RT8N6"
 };
 
-//Changes the balances in the HTML page
+//Changes the balances and the chart in the HTML page
+let data;
 function changeBalance(){
     userRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        //console.log("changeBalance called");
+        data = snapshot.val();
         document.getElementById("balance").innerHTML = data.balance;
-    });   
-    addChart(); 
+        document.getElementById("name").innerHTML = data.name;
+    });
+    console.log("data extracted");
 }
 
 //Updates the balance in the Database
 function updateBalance(amt){
-    let data;
-    userRef.once('value', (snapshot) => {
-        data = snapshot.val();
-    });
     userRef.update({
         balance: parseFloat(data.balance) + parseFloat(amt)
       })
@@ -74,14 +71,13 @@ function addIncome(){
     const incomesRef = userRef.child("incomes");
     incomesRef.push(incomeData)
     .then(() => {
+        updateBalance(income);    
         console.log("Income added successfully!");
     })
     .catch((error) => {
         console.error("Error adding data:", error);
     });
     
-    updateBalance(income);    
-    changeBalance();
     document.getElementById("income").value = "";
     document.getElementById("incomeSections").value = "";
     document.getElementById("addIncomeError").innerHTML = "";
@@ -113,7 +109,6 @@ function addExpense(){
         console.error("Error adding data:", error);
     });
     updateBalance(expense*-1);
-    changeBalance();
     document.getElementById("expense").value = "";
     document.getElementById("expenseSections").value = "";
     document.getElementById("addExpenseError").innerHTML = "";
@@ -127,45 +122,50 @@ function accStatement(){
 let expenseChart;
 function addChart() {
     userRef.child("expenses").once('value')
-        .then((snapshot) => {
-            const expensesData = snapshot.val();
-
-            // Rest of the code to process and display the chart...
-            const sections = [];
-            const counts = [];
-
-            for (const expenseId in expensesData) {
-                const expense = expensesData[expenseId];
-                const section = expense.section;
-
-                const index = sections.indexOf(section);
-                if (index !== -1) {
-                    counts[index]++;
+    .then((snapshot) => {
+        let expensesData = snapshot.val();
+        
+        const sections = [];
+        const counts = [];
+        const amounts = [];
+        
+        for (const expenseId in expensesData) {
+            const expense = expensesData[expenseId];
+            const section = expense.section;
+            const amount = expense.amount;
+            
+            const index = sections.indexOf(section);
+            if (index !== -1) {
+                counts[index]++;
+                amounts[index] += amount;
                 } else {
                     sections.push(section);
                     counts.push(1);
+                    amounts.push(amount);
                 }
             }
-
+            
             const ctx = document.getElementById('expenseChart').getContext('2d');
-
+            
             if(expenseChart){
                 expenseChart.destroy();
             }
-
+            
             expenseChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: sections,
                     datasets: [{
-                        data: counts,
+                        data: amounts,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.7)',
                             'rgba(54, 162, 235, 0.7)',
                             'rgba(255, 206, 86, 0.7)',
-                            // Add more colors as needed
+                            'rgba(32, 133, 236, 0.7)',
+                            'rgba(206, 169, 188, 0.7)',
+                            'rgba(50, 50, 50, 0.7)',
                         ],
-                        borderWidth: 1,
+                        borderWidth: 0,
                     }],
                 },
                 options: {
@@ -181,4 +181,5 @@ function addChart() {
         .catch((error) => {
             console.error("Error fetching expenses data:", error);
         });
+    console.log("Chart creation completed");
 }
