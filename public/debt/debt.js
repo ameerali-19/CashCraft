@@ -6,8 +6,11 @@ function init(){
     userRef = globalRef.child("user1");
     
     globalRef.on('value', updateData);
+    globalRef.on('value', addChart);
     document.getElementById("addCredit").addEventListener("click",updateCredit,false);
     document.getElementById("addDebt").addEventListener("click",updateDebt,false);
+    document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
+    document.getElementById("changeChart").addEventListener("change",changeChart,false);
 
     isFirstLoad = true;
     console.log("init");
@@ -37,6 +40,8 @@ function updateData(){
     if(isFirstLoad){
         document.getElementById("name").innerHTML = data.name;
         isFirstLoad = false;
+        graphSource = data.debts;
+        graphType = "pie";
     }
     console.log("data extracted");
 }
@@ -122,5 +127,79 @@ function updateDebt(){
     document.getElementById("debtAmount").value = "";
     document.getElementById("debtName").value = "";
     document.getElementById("debtError").innerHTML = "";
+}
 
+function changeGraphSource(){
+    console.log("changeGraphSource");
+    const source = document.getElementById("changeGraphSource").value;
+    graphSource = source == "debt" ? data.debts : data.credits;
+    addChart();
+}
+
+function changeChart(){
+    console.log("changeChart");    
+    graphType = document.getElementById("changeChart").value;
+    addChart();
+}
+
+let graphSource;
+let graphType;
+let debtChart;
+function addChart() {
+
+    let debtData = graphSource;
+        
+    const names = [];
+    const counts = [];
+    const amounts = [];
+        
+    for (const debtID in debtData) {
+        const debt = debtData[debtID];
+        const name = debt.name;
+        const amount = debt.amount;
+            
+        const index = names.indexOf(name);
+        if (index !== -1) {
+            counts[index]++;
+            amounts[index] += amount;
+        } else {
+            names.push(name);
+            counts.push(1);
+            amounts.push(amount);
+            }
+        }
+            
+        const ctx = document.getElementById('debtChart').getContext('2d');
+            
+        if(debtChart){
+            debtChart.destroy();
+        }
+            
+        debtChart = new Chart(ctx, {
+            type: graphType,
+            data: {
+                labels: names,
+                datasets: [{
+                    data: amounts,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(32, 133, 236, 0.7)',
+                        'rgba(206, 169, 188, 0.7)',
+                        'rgba(50, 50, 50, 0.7)',
+                    ],
+                    borderWidth: 0,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Expense Distribution by Section',
+                },
+            },
+        });
+    console.log("Chart creation completed");
 }
