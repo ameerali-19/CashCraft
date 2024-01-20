@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", init, false);
+
+//Intiates the whole document with necessary parameters
+//Adds event listener for every components necessary
 function init(){
     firebase.initializeApp(firebaseConfig);
     database = firebase.database();
@@ -18,12 +21,12 @@ function init(){
     document.getElementById("changeChart").addEventListener("change",changeChart,false);
     document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
     
-    graphSourceFlag = 0;
+    isFirstLoad = true;
 
     console.log("init");
 }
 
-
+//Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDwZ4DRzgDSKfei6jd6_u4sJf3cVECV3nE",
     authDomain: "cashcraftfinances.firebaseapp.com",
@@ -35,18 +38,18 @@ const firebaseConfig = {
     measurementId: "G-1PWK0RT8N6"
 };
 
+let data;      //Global variable to store the extracted data from DB
+let isFirstLoad;
 //Changes the balances and the chart in the HTML page
-let data;
-let graphSourceFlag;
 function changeBalance(){
     userRef.on('value', (snapshot) => {
         data = snapshot.val();
         document.getElementById("balance").innerHTML = data.balance;
-        document.getElementById("name").innerHTML = data.name;
     });
-    if(graphSourceFlag == 0){
+    if(isFirstLoad){
+        document.getElementById("name").innerHTML = data.name;
         graphSource = graphSource != data.incomes ? data.expenses : data.incomes;
-        graphSourceFlag = 1;
+        isFirstLoad = false;
     }
     console.log("data extracted");
 }
@@ -64,6 +67,7 @@ function updateBalance(amt){
         }); 
 }
 
+//Adds income to incomes and updates the balance in the db
 function addIncome(){
     var income = parseFloat(document.getElementById("income").value);
     var section = document.getElementById("incomeSections").value;
@@ -96,7 +100,7 @@ function addIncome(){
 
 }
 
-
+//Adds expense to expenses and updates the balance in the db
 function addExpense(){
     var expense = parseFloat(document.getElementById("expense").value);
     var section = document.getElementById("expenseSections").value;
@@ -127,19 +131,22 @@ function addExpense(){
     document.getElementById("addExpenseError").innerHTML = "";
 }
 
-let chartType = "pie";
+let chartType = "pie";    //Global variable to store the type of chart - Initiatially "pie"
 function changeChart(){
     chartType = chartType === "pie" ? "bar" : "pie" ; 
     addChart();
 }
 let expenseChart;
-let graphSource;
+let graphSource;           //Global variable to store the source of chart - Initiatially "expenses"
+
+//Functions to change the graph source based on the input
 function changeGraphSource(){
     const selectedOption = document.getElementById("changeGraphSource").value;
     graphSource = selectedOption == "expenses" ? data.expenses : data.incomes;
     addChart();
 }
 
+//creates and adds the graph/chart into HTML
 function addChart() {
 
     let expensesData = graphSource;

@@ -17,8 +17,11 @@
     <div class="container">
         <div class="card userDetails custom-card">
             <div class="card-body">
-                <h2 class="card-title"><span id="name">Ameerali</span></h2>
+                <h2 class="card-title"><span id="name"></span></h2>
                 <h6 class="card-text">Balance : <span id="balance"></span></h6>
+                <h6 class="card-text">Total Debt : <span id="totalDebt"></span>
+                    Total Credit : <span id="totalCredit"></span>
+                </h6>
             </div>
         </div>
         <div class="chartOptions">
@@ -34,18 +37,17 @@
         <div class="graph">
             <canvas id="expenseChart" width="350" height="300" ></canvas>
         </div>
-        <div class="addCredit">
-            <input type="number" inputmode="numeric" id="creditAmount" placeholder="Enter the amount" class="form-control">
-            <input type="text"text id="creditName" placeholder="Enter the name" class="form-control">
-            <div class="creditError" ><h6 id="creditError"></h6></div>
-            <button type="button" class="btn btn-dark" id="addCredit">Add Debt</button>
-        </div>
-        
         <div class="addDebt">
             <input type="number" inputmode="numeric" id="debtAmount" placeholder="Enter the amount" class="form-control">
             <input type="text" id="debtName" placeholder="Enter the name" class="form-control">
-            <div class="debtError" ><h6 id="debtError"></h6></div>
-            <button type="button" class="btn btn-dark" id="addDebt">Add Credit</button>
+            <div class="errorMessage" ><h6 id="debtError"></h6></div>
+            <button type="button" class="btn btn-dark" id="addDebt">Add Debt</button>
+        </div>
+        <div class="addCredit">
+            <input type="number" inputmode="numeric" id="creditAmount" placeholder="Enter the amount" class="form-control">
+            <input type="text" id="creditName" placeholder="Enter the name" class="form-control">
+            <div class="errorMessage" ><h6 id="creditError"></h6></div>
+            <button type="button" class="btn btn-dark" id="addCredit">Add Credit</button>
         </div>
     </div>
 </body>
