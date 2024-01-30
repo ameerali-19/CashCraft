@@ -48,7 +48,7 @@ function changeBalance(){
     });
     if(isFirstLoad){
         document.getElementById("name").innerHTML = data.name;
-        graphSource = graphSource != data.incomes ? data.expenses : data.incomes;
+        graphSource = "expenses";
         isFirstLoad = false;
     }
     console.log("data extracted");
@@ -141,42 +141,47 @@ let graphSource;           //Global variable to store the source of chart - Init
 
 //Functions to change the graph source based on the input
 function changeGraphSource(){
-    const selectedOption = document.getElementById("changeGraphSource").value;
-    graphSource = selectedOption == "expenses" ? data.expenses : data.incomes;
+    graphSource = document.getElementById("changeGraphSource").value;
     addChart();
 }
 
 //creates and adds the graph/chart into HTML
 function addChart() {
 
-    let expensesData = graphSource;
+    userRef.once('value')
+    .then((snapshot) => {
+        newData = snapshot.val();
         
-    const sections = [];
-    const counts = [];
-    const amounts = [];
+        console.log(newData);
         
-    for (const expenseId in expensesData) {
-        const expense = expensesData[expenseId];
-        const section = expense.section;
-        const amount = expense.amount;
+        let expensesData = graphSource=="expenses" ? newData.expenses : newData.incomes;
+        
+        const sections = [];
+        const counts = [];
+        const amounts = [];
+        
+        for (const expenseId in expensesData) {
+            const expense = expensesData[expenseId];
+            const section = expense.section;
+            const amount = expense.amount;
             
-        const index = sections.indexOf(section);
-        if (index !== -1) {
-            counts[index]++;
+            const index = sections.indexOf(section);
+            if (index !== -1) {
+                counts[index]++;
             amounts[index] += amount;
         } else {
             sections.push(section);
             counts.push(1);
             amounts.push(amount);
-            }
         }
-            
-        const ctx = document.getElementById('expenseChart').getContext('2d');
-            
-        if(expenseChart){
+    }
+    
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    
+    if(expenseChart){
             expenseChart.destroy();
         }
-            
+        
         expenseChart = new Chart(ctx, {
             type: chartType,
             data: {
@@ -203,5 +208,6 @@ function addChart() {
                 },
             },
         });
-    console.log("Chart creation completed");
+        console.log("Chart creation completed");
+    });
 }
