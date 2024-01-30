@@ -8,7 +8,7 @@ function init(){
     globalRef = database.ref("users");
     userRef = globalRef.child("user1");
     
-    globalRef.on('value', changeBalance);
+    globalRef.on('value', updateData);
     globalRef.on('value', addChart);
     document.getElementById("addIncome").addEventListener("click",addIncome,false);
     document.getElementById("addExpense").addEventListener("click",addExpense,false);
@@ -41,7 +41,7 @@ const firebaseConfig = {
 let data;      //Global variable to store the extracted data from DB
 let isFirstLoad;
 //Changes the balances and the chart in the HTML page
-function changeBalance(){
+function updateData(){
     userRef.on('value', (snapshot) => {
         data = snapshot.val();
         document.getElementById("balance").innerHTML = data.balance;
@@ -152,8 +152,6 @@ function addChart() {
     .then((snapshot) => {
         newData = snapshot.val();
         
-        console.log(newData);
-        
         let expensesData = graphSource=="expenses" ? newData.expenses : newData.incomes;
         
         const sections = [];
@@ -209,5 +207,8 @@ function addChart() {
             },
         });
         console.log("Chart creation completed");
+    })
+    .catch((error) => {
+        console.error("Error adding chart:", error);
     });
 }

@@ -40,7 +40,7 @@ function updateData(){
     if(isFirstLoad){
         document.getElementById("name").innerHTML = data.name;
         isFirstLoad = false;
-        graphSource = data.debts;
+        graphSource = "debt";
         graphType = "pie";
     }
     console.log("data extracted");
@@ -131,8 +131,7 @@ function updateDebt(){
 
 function changeGraphSource(){
     console.log("changeGraphSource");
-    const source = document.getElementById("changeGraphSource").value;
-    graphSource = source == "debt" ? data.debts : data.credits;
+    graphSource = document.getElementById("changeGraphSource").value;
     addChart();
 }
 
@@ -147,34 +146,38 @@ let graphType;
 let debtChart;
 function addChart() {
 
-    let debtData = graphSource;
+    userRef.once('value')
+    .then((snapshot) => {
+        newData = snapshot.val();
         
-    const names = [];
-    const counts = [];
-    const amounts = [];
+        let debtData = graphSource == "debt" ? newData.debts : newData.credits;
         
-    for (const debtID in debtData) {
-        const debt = debtData[debtID];
-        const name = debt.name;
-        const amount = debt.amount;
+        const names = [];
+        const counts = [];
+        const amounts = [];
+        
+        for (const debtID in debtData) {
+            const debt = debtData[debtID];
+            const name = debt.name;
+            const amount = debt.amount;
             
-        const index = names.indexOf(name);
-        if (index !== -1) {
-            counts[index]++;
-            amounts[index] += amount;
-        } else {
-            names.push(name);
+            const index = names.indexOf(name);
+            if (index !== -1) {
+                counts[index]++;
+                amounts[index] += amount;
+            } else {
+                names.push(name);
             counts.push(1);
             amounts.push(amount);
             }
         }
-            
+        
         const ctx = document.getElementById('debtChart').getContext('2d');
-            
+        
         if(debtChart){
             debtChart.destroy();
         }
-            
+        
         debtChart = new Chart(ctx, {
             type: graphType,
             data: {
@@ -201,5 +204,9 @@ function addChart() {
                 },
             },
         });
-    console.log("Chart creation completed");
+        console.log("Chart creation completed");
+    })
+    .catch((error) => {
+        console.error("Error adding chart:", error);
+    });
 }
