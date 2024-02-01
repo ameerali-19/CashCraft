@@ -12,14 +12,13 @@ CashCraft is a simple web application to track your income and expenses. It prov
 ## Features
 
 - User Authentication
-- Track Income and Expenses
-- Visualize expense distribution by section
-- Track Debts and Credits
+- Track and Visualize Incomes and Expenses
+- Track and Visualize Debts and Credits
 - View account statement
 
 ## Technologies Used
 
-- Chart.js for data visualization
+- Chart.js for Data Visualization
 - Firebase Realtime Database
 - Firebase Authentication
 - JavaScript
