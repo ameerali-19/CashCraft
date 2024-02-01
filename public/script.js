@@ -31,6 +31,7 @@ function init(){
     },false);
     document.getElementById("changeChart").addEventListener("change",changeChart,false);
     document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
+    document.getElementById("signOut").addEventListener("click",signOut,false);
     
     isFirstLoad = true;
 
@@ -221,5 +222,16 @@ function addChart() {
     })
     .catch((error) => {
         console.error("Error adding chart:", error);
+    });
+}
+
+function signOut(){
+    auth.signOut()
+    .then(()=>{
+        console.log("User signed out");
+        window.location.href = "index.html";
+    })
+    .catch((error)=>{
+        console.log(error.message);
     });
 }

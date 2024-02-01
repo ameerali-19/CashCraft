@@ -2,8 +2,18 @@ document.addEventListener("DOMContentLoaded", init, false);
 function init(){
     firebase.initializeApp(firebaseConfig);
     database = firebase.database();
+
+    auth = firebase.auth();
+
     globalRef = database.ref("users");
-    userRef = globalRef.child("user1");
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            userRef = globalRef.child(user.uid);
+        }
+        else{
+            window.location.href = "login.html";
+        }
+    });
     
     globalRef.on('value', updateData);
     globalRef.on('value', addChart);

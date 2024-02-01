@@ -63,14 +63,18 @@ function register(){
             name : name,
             balance : balance,
             totalCredit : 0,
-            totalDebit : 0
+            totalDebt : 0
         }
     
-        database.ref().child('users/' + user.uid).set(userData);
+        database.ref().child('users/' + user.uid).set(userData)
+        .then(()=>{
+            console.log("User added to DB"+user.uid);
+            window.location.href = "home.html";
+        })
+        .catch((error)=>{
+            console.log(error);
+        });
     
-        console.log("User added to DB"+user.uid);
-        
-        window.location.href = "home.html";
     })
     .catch(()=>{
         document.getElementById("signUpError").innerHTML = "Error creating user";
