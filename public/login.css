@@ -72,3 +72,7 @@ body {
 .top-register-button{
     margin-left: 0.5rem;
 }
+
+.error {
+    color: red;
+}
