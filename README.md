@@ -11,8 +11,9 @@ CashCraft is a simple web application to track your income and expenses. It prov
 
 ## Features
 
-- Track income and expenses
+- Track Income and Expenses
 - Visualize expense distribution by section
+- Track Debts and Credits
 - View account statement
 
 ## Technologies Used

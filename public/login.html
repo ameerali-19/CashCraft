@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashCraft - Login</title>
+    <link rel="stylesheet" href="login.css" ></link>
+    <script src="login.js"></script>
+</head>
+<body>
+
+    <div class="card">
+        <div class="button-container">
+            <button class="login-btn">Login</button>
+            <button class="register-btn top-register-button">Register</button>
+        </div>
+
+        <div id="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username">
+            </div>
+            <div class="form-group password-container">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+            <div class="button-container">
+                <button class="login-btn">Sign In</button>
+            </div>
+        </div>
+
+        <div id="register-form" style="display: none;">
+            <div class="form-group">
+                <label for="newUsername">Username</label>
+                <input type="text" id="newUsername" placeholder="Enter your username">
+            </div>
+            <div class="form-group password-container">
+                <label for="newPassword">Password</label>
+                <input type="password" id="newPassword" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="balance">Current Balance</label>
+                <input type="number" id="balance" placeholder="Enter your balance">
+            </div>
+            <div class="button-container">
+                <button class="register-btn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector('.login-btn').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        });
+
+        document.querySelector('.register-btn').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
