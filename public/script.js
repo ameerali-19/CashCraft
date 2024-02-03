@@ -109,7 +109,8 @@ function addIncome(){
     document.getElementById("income").value = "";
     document.getElementById("incomeSections").value = "";
     document.getElementById("addIncomeError").innerHTML = "";
-
+    graphSource = "incomes";
+    document.getElementById("sourceIncome").selected = "true";
 }
 
 //Adds expense to expenses and updates the balance in the db
@@ -141,6 +142,8 @@ function addExpense(){
     document.getElementById("expense").value = "";
     document.getElementById("expenseSections").value = "";
     document.getElementById("addExpenseError").innerHTML = "";
+    graphSource = "expenses";
+    document.getElementById("sourceExpense").selected = "true";
 }
 
 let chartType = "pie";    //Global variable to store the type of chart - Initiatially "pie"
@@ -165,6 +168,15 @@ function addChart() {
         newData = snapshot.val();
         
         let expensesData = graphSource=="expenses" ? newData.expenses : newData.incomes;
+
+        if(!expensesData){
+            document.getElementById("graphcontainer").style.display = "none";
+            document.getElementById("nochart").style.display = "block";
+        }
+        else{
+            document.getElementById("graphcontainer").style.display = "block";
+            document.getElementById("nochart").style.display = "none";
+        }
         
         const sections = [];
         const counts = [];
@@ -189,36 +201,36 @@ function addChart() {
     const ctx = document.getElementById('expenseChart').getContext('2d');
     
     if(expenseChart){
-            expenseChart.destroy();
-        }
+        expenseChart.destroy();
+    }
         
-        expenseChart = new Chart(ctx, {
-            type: chartType,
-            data: {
-                labels: sections,
-                datasets: [{
-                    data: amounts,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(32, 133, 236, 0.7)',
-                        'rgba(206, 169, 188, 0.7)',
-                        'rgba(50, 50, 50, 0.7)',
-                    ],
-                    borderWidth: 0,
-                }],
+    expenseChart = new Chart(ctx, {
+        type: chartType,
+        data: {
+            labels: sections,
+            datasets: [{
+                data: amounts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(32, 133, 236, 0.7)',
+                    'rgba(206, 169, 188, 0.7)',
+                    'rgba(50, 50, 50, 0.7)',
+                ],
+                borderWidth: 0,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+                display: true,
+                text: 'Expense Distribution by Section',
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                title: {
-                    display: true,
-                    text: 'Expense Distribution by Section',
-                },
-            },
-        });
-        console.log("Chart creation completed");
+        },
+    });
+    console.log("Chart creation completed");
     })
     .catch((error) => {
         console.error("Error adding chart:", error);

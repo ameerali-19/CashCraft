@@ -48,12 +48,39 @@ function login(){
     });
 }
 
+//validates email and password
+function validateEmail(email){
+    flag = true;
+    var validEmailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if(!(email.match(validEmailRegex))){
+        flag = false;
+    }
+    return flag;
+}
+
+function validatePassword(password){
+    flag = true;
+    if(password.length<6){
+        flag = false;
+    }
+    return flag;
+}
+
 function register(){
     var email = document.getElementById("newUsername").value;
     var password = document.getElementById("newPassword").value;
     var name = document.getElementById("name").value;
     var balance = document.getElementById("balance").value;
 
+    if(!validateEmail(email)){
+        document.getElementById("signUpError").innerHTML = "Invalid user name.Use a proper email.";
+        return
+    }
+    
+    if(!validatePassword(password)){
+        document.getElementById("signUpError").innerHTML = "Password must be atleast 6 characters.";
+        return
+    }
 
     auth.createUserWithEmailAndPassword(email,password)
     .then(()=>{
