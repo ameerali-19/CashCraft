@@ -24,6 +24,8 @@ function init() {
 
     document.getElementById("signIn").addEventListener("click",login,false);
     document.getElementById("signUp").addEventListener("click",register,false);
+    document.getElementById("forgotPassword").addEventListener("click",forgotPassword,false);
+    document.getElementById("passwordReset").addEventListener("click",passwordReset,false);
 
     console.log("init");
 }
@@ -107,5 +109,22 @@ function register(){
         document.getElementById("signUpError").innerHTML = "Error creating user";
         console.log(error.message);
         console.log(error.code);
+    });
+}
+
+function forgotPassword(){
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('forgotPasswordSection').style.display = 'block';
+}
+
+function passwordReset(){
+    var email = document.getElementById("forgotUsername").value;
+    auth.sendPasswordResetEmail(email)
+    .then(()=>{
+        alert("Password reset email send");
+        window.location.href = "login.html";
+    })
+    .catch(()=>{
+        console.log("email not send");
     });
 }

@@ -32,6 +32,8 @@ function init(){
     document.getElementById("changeChart").addEventListener("change",changeChart,false);
     document.getElementById("changeGraphSource").addEventListener("change",changeGraphSource,false);
     document.getElementById("signOut").addEventListener("click",signOut,false);
+    document.getElementById("month").addEventListener("change",addChart,false);
+    document.getElementById("year").addEventListener("change",addChart,false);
     
     isFirstLoad = true;
 
@@ -167,9 +169,20 @@ function addChart() {
     .then((snapshot) => {
         newData = snapshot.val();
         
-        let expensesData = graphSource=="expenses" ? newData.expenses : newData.incomes;
+        let chartData = graphSource=="expenses" ? newData.expenses : newData.incomes;
 
-        if(!expensesData){
+        let month = document.getElementById("month").value;
+        let year = document.getElementById("year").value;
+
+        if(month === "all"){
+            document.getElementById("year").style.display = "none";
+        }
+        else{
+            document.getElementById("year").style.display = "block";
+            chartData = filterDataByMonthAndYear(chartData,month,year);
+        }
+
+        if(!chartData){
             document.getElementById("graphcontainer").style.display = "none";
             document.getElementById("nochart").style.display = "block";
         }
@@ -182,8 +195,8 @@ function addChart() {
         const counts = [];
         const amounts = [];
         
-        for (const expenseId in expensesData) {
-            const expense = expensesData[expenseId];
+        for (const expenseId in chartData) {
+            const expense = chartData[expenseId];
             const section = expense.section;
             const amount = expense.amount;
             
@@ -236,6 +249,31 @@ function addChart() {
         console.error("Error adding chart:", error);
     });
 }
+
+function filterDataByMonthAndYear(data, selectedMonth, selectedYear) {
+    if (!data) {
+        return {};
+    }
+
+    const filteredData = {};
+
+    for (const key in data) {
+        const expense = data[key];
+        const expenseDate = expense.date;
+
+        const [month, day, year] = expenseDate.split('/');
+
+        const expenseMonth = new Date(`${month}/${day}/${year}`).toLocaleString('en-US', { month: 'long' });
+
+        if (expenseMonth.toLowerCase() === selectedMonth.toLowerCase() && year === selectedYear) {
+            filteredData[key] = expense;
+        }
+    }
+
+    return filteredData;
+}
+
+
 
 function signOut(){
     auth.signOut()

@@ -76,3 +76,9 @@ body {
 .error {
     color: red;
 }
+
+.forgotpassword{
+    color: blue;
+    text-decoration: underline;
+    text-align: center;
+}

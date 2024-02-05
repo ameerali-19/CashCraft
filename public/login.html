@@ -15,14 +15,14 @@
 </head>
 <body>
 
-    <div class="card">
+    <div class="card" id="login">
         <div class="button-container">
             <button class="login-btn">Login</button>
             <button class="register-btn top-register-button">Register</button>
         </div>
 
         <div id="login-form">
-            <div class="form-group">
+            <div class="form-group" >
                 <label for="username">Username</label>
                 <input type="text" id="username" placeholder="Enter your username">
             </div>
@@ -33,6 +33,9 @@
             <div id="signInError" class="error"></div>
             <div class="button-container">
                 <button class="login-btn" id="signIn">Sign In</button>
+            </div>
+            <div class="forgotpassword">
+                <span id="forgotPassword">Forgot password ?</span>
             </div>
         </div>
 
@@ -56,6 +59,17 @@
             <div id="signUpError" class="error"></div>
             <div class="button-container">
                 <button class="register-btn" id="signUp">Sign Up</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="card" id="forgotPasswordSection"  style="display: none;">
+        <h4>Reset your password</h4>
+        <div class="form-group">
+            <label for="forgotUsername">Username</label>
+            <input type="text" id="forgotUsername" placeholder="Enter your username">
+            <div class="button-container">
+                <button class="login-btn" id="passwordReset">Send Password Reset Link</button>
             </div>
         </div>
     </div>
